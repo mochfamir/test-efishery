@@ -1,5 +1,6 @@
 import React, { Component, ReactNode } from 'react';
 import { options, Area, Size } from '../services/options';
+import { commodityService, Commodity } from '../services/commodity';
 
 import './form-add-commodity.scss';
 
@@ -55,8 +56,42 @@ export class Form extends Component<{ showModal: any }> {
   }
 
   onSubmit(e) {
-    console.log(this.state);
+    const {
+      inputCommodity,
+      inputPrice,
+      inputSize,
+      inputProvince,
+      inputCity,
+    } = this.state;
+    const input: Commodity = {
+      komoditas: inputCommodity,
+      area_provinsi: inputProvince,
+      area_kota: inputCity,
+      size: inputSize,
+      price: inputPrice,
+    };
+
+    commodityService.create(input);
+
+    this.onCancel();
     e.preventDefault();
+  }
+
+  onCancel() {
+    const newState = {
+      ...this.state,
+      inputCommodity: '',
+      inputPrice: '',
+      inputSize: '',
+      inputProvince: '',
+      inputCity: '',
+    };
+
+    setTimeout(() => {
+      this.setState(newState);
+    }, 500);
+
+    this.props.showModal(false);
   }
 
   render(): ReactNode {
@@ -72,6 +107,7 @@ export class Form extends Component<{ showModal: any }> {
               <input
                 type='text'
                 className='form-control'
+                value={this.state.inputCommodity}
                 onChange={(e) =>
                   this.setState({
                     ...this.state,
@@ -170,6 +206,7 @@ export class Form extends Component<{ showModal: any }> {
               <input
                 type='number'
                 className='form-control'
+                value={this.state.inputPrice}
                 onChange={(e) =>
                   this.setState({ ...this.state, inputPrice: e.target.value })
                 }
@@ -181,7 +218,7 @@ export class Form extends Component<{ showModal: any }> {
                 <button
                   type='button'
                   className='btn btn-cancel'
-                  onClick={() => this.props.showModal(false)}
+                  onClick={() => this.onCancel()}
                 >
                   Cancel
                 </button>
