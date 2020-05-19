@@ -70,26 +70,47 @@ export default class App extends Component {
     });
   };
 
+  handleSort = (column: string, dir: 'ASC' | 'DSC' | 'NONE') => {
+    const commodities = [...this.state.commodities];
+    const result = commodities.sort((a, b) => {
+      if (dir === 'DSC') {
+        return b[column] - a[column];
+      } else  {
+        return a[column] - b[column];
+      }
+    });
+
+    console.log(column, dir);
+
+    this.setState({
+      ...this.state,
+      commodities: result,
+    });
+  };
+
   render(): ReactNode {
-      return (
-        <div className='app'>
-          <div className='header'>
-            <FilterListCommodity handleSearch={this.handleSearch} />
-            <button
-              type='button'
-              className='btn btn-success'
-              onClick={() => this.showModal(true)}
-            >
-              Tambah Komoditas
-            </button>
-          </div>
-          <div className={this.state.classModal}>
-            <div className='modal-content'>
-              <Form showModal={this.showModal} />
-            </div>
-          </div>
-          <ListCommodity listCommodity={this.state.commodities} />
+    return (
+      <div className='app'>
+        <div className='header'>
+          <FilterListCommodity handleSearch={this.handleSearch} />
+          <button
+            type='button'
+            className='btn btn-success'
+            onClick={() => this.showModal(true)}
+          >
+            Tambah Komoditas
+          </button>
         </div>
-      );
+        <div className={this.state.classModal}>
+          <div className='modal-content'>
+            <Form showModal={this.showModal} />
+          </div>
+        </div>
+        <ListCommodity
+          listCommodity={this.state.commodities}
+          handleSort={this.handleSort}
+        />
+      </div>
+    );
   }
 }
