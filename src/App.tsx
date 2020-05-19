@@ -80,8 +80,6 @@ export default class App extends Component {
       }
     });
 
-    console.log(column, dir);
-
     this.setState({
       ...this.state,
       commodities: result,

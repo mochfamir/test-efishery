@@ -20,8 +20,8 @@ export class ListCommodity extends Component<{
       sortDir: dir,
       column: col,
     });
-    console.log(col, this.sortDirection[dir]);
     const sortDirection = this.sortDirection[dir] as any
+
     this.props.handleSort(col, sortDirection);
   }
 
